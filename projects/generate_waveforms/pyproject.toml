@@ -16,7 +16,7 @@ generate-waveforms = "generate_waveforms:main"
 
 [tool.typeo]
 waveform = "mlpe.injection.waveforms.sine_gaussian_frequency"
-prior = "./priors/sine_gaussian.prior"  
+prior = "./tests/priors/sine_gaussian.prior"  
 sample_rate = 2048 
 domain = "frequency"
 n_samples = 100 
