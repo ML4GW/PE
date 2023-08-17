@@ -2,13 +2,13 @@
 # note: until pinto update gets in, any steps
 # that have subcommands will fail (e.g. training and sampling)
 steps = [
-    #"data_generation:generate-background",
-    #"data_generation:generate-waveforms",
-    #"data_generation:generate-flow-injections",
+    "data_generation:generate-background",
+    "data_generation:generate-waveforms",
+    "data_generation:generate-flow-injections",
     #"data_generation:generate-bilby-injections",
     #"analyze_with_bilby:analyze-with-bilby",
     #"train:train:maf:resnet",
-    "sampling:sample-with-flow:maf:resnet",
+    #"sampling:sample-with-flow:maf:resnet",
     #"sampling:sample-and-compare-with-bilby:maf:resnet"
 ]
 
@@ -49,7 +49,7 @@ maf = {num_transforms = 15, num_blocks = 2, use_batch_norm = true}
 # embedding subcommands
 dense = {context_dim = 64, hidden_layer_size = 128, num_hidden_layers = 2}
 coherent = {context_dim = 64, hidden_layer_size = 128, num_hidden_layers = 2}
-resnet = {context_dim = 128, layers = [2,  2], norm_groups = 8}
+resnet = {context_dim = 128, layers = [2, 2], norm_groups = 8}
 
 [tool.typeo.scripts.generate-background]
 datadir = "${base.datadir}"
@@ -115,7 +115,7 @@ resnet = "${base.resnet}"
 
 # scheduler subcommand
 [tool.typeo.scripts.train.optimizer]
-adam = {lr = 1e-4, weight_decay = 1e-5}
+adam = {lr = 1e-3, weight_decay = 1e-5}
 
 # optimizer subcommand
 [tool.typeo.scripts.train.scheduler]
@@ -170,6 +170,7 @@ waveform = "mlpe.injection.bilby_frequency_domain_sine_gaussian"
 datadir = "${base.datadir}"
 logdir = "${base.logdir}"
 accounting_group = "${LIGO_ACCOUNTING_GROUP}"
+
 channel = "${base.channel}"
 sample_rate = "${base.sample_rate}"
 prior = "${base.prior}"
@@ -223,3 +224,20 @@ coupling = "${base.coupling}"
 dense = "${base.dense}"
 coherent = "${base.coherent}"
 resnet = "${base.resnet}"
+
+[tool.typeo.scripts.deploy-bilby]
+start = "${base.stop}"
+stop = "${base.test_stop}"
+n_samples = 50
+duration = 2
+sample_rate = "${base.sample_rate}"
+fmin = "${base.highpass}"
+prior = "${base.prior}"
+waveform = "mlpe.injection.bilby_frequency_domain_sine_gaussian"
+ifos = "${base.ifos}"
+state_flag = "${base.state_flag}"
+channel = "${base.channel}"
+outdir = "${base.basedir}"
+request_cpus = 24
+accounting_group = "${LIGO_ACCOUNTING_GROUP}"
+accounting_group_user = "${LIGO_USERNAME}"

@@ -7,17 +7,21 @@ license = "MIT"
 
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.11"
+python = ">=3.9,<3.11"
 typeo = {git = "https://github.com/ML4GW/typeo.git"}
 "mlpe.logging" = {path = "../../../libs/logging", develop = true}
 "mlpe.injection" = {path = "../../../libs/injection", develop = true}
+"mlpe.deploy" = {path = "../../../libs/deploy", develop = true}
 
+mldatafind = {git = "https://github.com/ML4GW/mldatafind.git"}
 bilby = "^2.0.0"
 bilby_pipe = "^1.0.8"
 ligo-skymap = "^1.0.7"
 
 [tool.poetry.scripts]
 analyze-with-bilby = "analyze_with_bilby.bilby_pipe:main"
+deploy-bilby = "analyze_with_bilby.deploy:main"
+run-bilby = "analyze_with_bilby.run:main"
 
 [build-system]
 requires = ["poetry-core"]

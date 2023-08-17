@@ -19,7 +19,6 @@ def sg_uniform():
     prior_dict["hrss"] = LogUniform(
         name="hrss", minimum=1e-23, maximum=5e-20, latex_label="hrss"
     )
-    prior_dict["time"] = 0
 
     prior_dict["eccentricity"] = Uniform(
         name="eccentricity", minimum=0, maximum=1, latex_label="eccentricity"
