@@ -10,8 +10,8 @@ class FrequencyDomainWaveformGenerator:
 
     def __init__(
         self,
-        time_duration: float,
-        sampling_frequency: float,
+        duration: float,
+        sample_rate: float,
         f_min: float,
         f_max: float,
         f_ref: float,

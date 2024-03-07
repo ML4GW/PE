@@ -1,0 +1,66 @@
+# lightning.pytorch==2.1.3
+seed_everything: 101588
+trainer:
+  accelerator: auto
+  strategy: auto
+  devices: auto
+  logger:
+    - class_path: lightning.pytorch.loggers.WandbLogger
+      init_args:
+        save_dir: "/home/ethan.marx/projects/PE/projects/sandbox_cbc/train/logs"
+  max_epochs: 100
+  check_val_every_n_epoch: 1
+  benchmark: false
+model:
+  class_path: train.model.PEModel
+  init_args:
+    arch:
+      class_path: train.architectures.flows.MaskedAutoRegressiveFlow
+      init_args:
+        hidden_features: 100
+        num_transforms: 20
+        num_blocks: 5
+        context_dim: 128
+        embedding_net: 
+          class_path: train.architectures.embeddings.ResNet
+          init_args: 
+            layers: [2, 2]
+            norm_layer:
+              class_path: ml4gw.nn.norm.GroupNorm1DGetter
+              init_args:
+                groups: 8
+    patience: null
+    save_top_k_models: 10
+    learning_rate: 1e-3
+    weight_decay: 1e-7
+data:
+  class_path: train.data.generator.WaveformGeneratorDataset
+  init_args:
+    inference_params: ["frequency", "quality", "hrss", "phase", "dec", "psi", "phi"] 
+    data_dir: "/home/ethan.marx/projects/PE/projects/sandbox_cbc/train/datadir_tmp/"
+    val_stride: 0.0625 
+    sample_rate: 2048
+    kernel_length: 2
+    fduration: 1
+    psd_length: 10
+    highpass: 32
+    batches_per_epoch: 200
+    batch_size: 512
+    ifos: ["H1", "L1"]
+    #waveform_generator: ml4gw.waveforms.SineGaussian
+    parameter_sampler: train.priors.sine_gaussian
+    parameter_transformer: train.data.utils.ParameterTransformer
+    device: cpu
+    dec: 
+      class_path: ml4gw.distributions.Cosine
+    psi: 
+      class_path: torch.distributions.Uniform
+      init_args:
+        low: 0
+        high: 3.14 
+    phi: 
+      class_path: torch.distributions.Uniform
+      init_args:
+        low: -3.14
+        high: 3.14
+    min_valid_duration: 10000.0

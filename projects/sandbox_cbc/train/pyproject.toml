@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "train"
+version = "0.1.0"
+description = "Train PE models with pytorch lightning"
+authors = ["Deep Chatterjee, Ethan Marx"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.12" #^3.8,<3.12"
+lightning = "^2.2.1"
+"ml4gw" = {path = "../../../ml4gw", develop = true}
+h5py = "^3.10.0"
+ray = "^2.9.3"
+bilby = "^2.2.3"
+healpy = "^1.16.6"
+pyro-ppl = "^1.9.0"
+jsonargparse = {version = "^4.17", extras = ["signatures"]}
+wandb = "^0.16.3"
+
+[tool.poetry.group.dev.dependencies]
+jupyter = "^1.0.0"
+pytest = "^8.0.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
