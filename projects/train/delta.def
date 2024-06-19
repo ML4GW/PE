@@ -1,0 +1,27 @@
+Bootstrap: localimage
+From: /sw/external/NGC/pytorch_23.05-py3.sif
+
+%environment
+    export PROJECT_DIR="/projects/bcse/"
+    export CONTAINER_WORKDIR="/amplfi/"
+
+%files
+. /amplfi/projects/train
+../../ml4gw /amplfi/ml4gw
+../../amplfi/architectures /amplfi/amplfi/architectures
+
+%post
+
+python -m pip install --upgrade pip && python -m pip install poetry
+
+cd /amplfi/projects/train \
+    && poetry export -f requirements.txt --without-hashes | sed -E 's/^-e[[:space:]]+//' > requirements.txt.tmp \
+    && cat requirements.txt.tmp | grep -v 'torch==' | grep -v 'torchaudio==' | grep -v 'nvidia' > requirements.txt \
+    && rm requirements.txt.tmp \
+    && python -m pip install -r requirements.txt --no-deps --no-cache-dir \
+    && python -m pip install -e . --no-deps --no-cache-dir
+
+%runscript
+#!/bin/bash
+exec "$@"
+
