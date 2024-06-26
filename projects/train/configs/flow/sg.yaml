@@ -9,6 +9,9 @@ trainer:
     - class_path: lightning.pytorch.loggers.WandbLogger
       init_args:
         save_dir: ${oc.env:AMPLFI_OUTDIR}/train
+        project: amplfi
+        # uncomment and set to name your run
+        # name: 
   max_epochs: 200
   check_val_every_n_epoch: 1
   log_every_n_steps: 20
@@ -18,7 +21,7 @@ model:
   init_args:
     outdir: ${oc.env:AMPLFI_OUTDIR}
     arch:
-      class_path: amplfi.architectures.flows.MaskedAutoRegressiveFlow
+      class_path: amplfi.architectures.flows.InverseAutoregressiveFlow
       init_args:
         hidden_features: 150
         num_transforms: 80
@@ -59,6 +62,7 @@ data:
       class_path: train.data.waveforms.generator.sg.SGGenerator
       init_args:
         num_fit_params: 100000
+        num_test_waveforms: 1000
         parameter_transformer: train.priors.sg_transformer
         parameter_sampler: train.priors.sg_prior
         dec: 

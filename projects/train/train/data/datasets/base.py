@@ -371,7 +371,7 @@ class AmplfiDataset(pl.LightningDataModule):
         # if we only have one training file
         # load it into memory and use InMemoryDataset
         if len(self.train_fnames) == 1:
-            train_background = self.load_background(self.train_fnames)
+            train_background = self.load_background(self.train_fnames)[0]
             dataset = InMemoryDataset(
                 train_background,
                 kernel_size=int(self.hparams.sample_rate * self.sample_length),

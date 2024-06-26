@@ -4,7 +4,7 @@ from typing import Optional
 
 import lightning.pytorch as pl
 import torch
-from lightning.pytorch.callbacks import ModelCheckpoint
+from lightning.pytorch.callbacks import LearningRateMonitor, ModelCheckpoint
 from ml4gw.transforms import ChannelWiseScaler
 
 Tensor = torch.Tensor
@@ -76,4 +76,5 @@ class AmplfiModel(pl.LightningModule):
             auto_insert_metric_name=False,
             mode="min",
         )
-        return [checkpoint]
+        lr_monitor = LearningRateMonitor(logging_interval="epoch")
+        return [checkpoint, lr_monitor]
